@@ -1,11 +1,7 @@
 const { Pool } = require("pg")
 
 const pool = new Pool({
-  user: "user01",
-  host: "db",
-  database: "test",
-  password: "qwertyui",
-  port: 5432,
+  connectionString: 'postgres://wdnpqtloooqelx:8a64abf549a602ea31428aa73577a1d790e0fc86fea65bdd9e22bb3275210b55@ec2-54-87-179-4.compute-1.amazonaws.com:5432/dcajikbuhd7m6i'
 })
 
 

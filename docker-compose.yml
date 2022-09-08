@@ -23,7 +23,7 @@ services:
       POSTGRES_PASSWORD: qwertyui
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      
+      - ./Init Database:/docker-entrypoint-initdb.d
       - .:/var/lib/postgresql/data
     ports:
       - "5432:5432"
@@ -37,7 +37,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1'
+          cpus: "1"
           memory: 4G
     networks:
       - postgres
