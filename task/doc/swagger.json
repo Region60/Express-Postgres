@@ -1,0 +1,715 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Тестовое задание  OpenAPI 3.0",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "maksim.kotov.hh@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "paths": {
+    "/user/signin": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Create user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "nickname": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "email@gmail.com",
+                "password": "password",
+                "nickname": "Nickname"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWxpbmEiLCJlbWFpbCI6ImFsaW5hQG1haWwuY29tIiwiaWQiOiJkMmU4YjI3MS0yMmIwLTRmNzAtYjdlMC1iZmUzZmU1NzRmMTQiLCJpYXQiOjE2NTk3ODU3MjQsImV4cCI6MTY1OTc4OTUyNH0.0yfakxn6-N_QYmjzwiOFvQmXhzSR1riv5I1cak0hqo0",
+                  "expire": 1800
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Такой пользователь уже существует"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/getuser": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Create user",
+        "parameters": [
+          {
+            "name": "JWT token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation - Bearer token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "email": "email@gmail.com",
+                  "nickname": "Nickname",
+                  "tags": [
+                    {
+                      "id": "id",
+                      "name": "example",
+                      "sortOrder": 0
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Такой пользователь уже существует"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Login user",
+        "parameters": 
+        [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Login user",
+          "content": {
+            "application/json": {
+              "example": {
+                "email": "email@gmail.com",
+                "password": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWxpbmEiLCJlbWFpbCI6ImFsaW5hQG1haWwuY29tIiwiaWQiOiJkMmU4YjI3MS0yMmIwLTRmNzAtYjdlMC1iZmUzZmU1NzRmMTQiLCJpYXQiOjE2NTk3ODU3MjQsImV4cCI6MTY1OTc4OTUyNH0.0yfakxn6-N_QYmjzwiOFvQmXhzSR1riv5I1cak0hqo0",
+                  "expire": 1800
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Неправильный логин или пароль"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/delete": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Delete user",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWxpbmEiLCJlbWFpbCI6ImFsaW5hQG1haWwuY29tIiwiaWQiOiJkMmU4YjI3MS0yMmIwLTRmNzAtYjdlMC1iZmUzZmU1NzRmMTQiLCJpYXQiOjE2NTk3ODU3MjQsImV4cCI6MTY1OTc4OTUyNH0.0yfakxn6-N_QYmjzwiOFvQmXhzSR1riv5I1cak0hqo0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "string": {
+                "example": "Пользователь удален"
+              }
+            }
+          },
+          "404": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Пользователь не найден"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "put": {
+        "tags": ["user"],
+        "summary": "Login user data",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "nickname": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "email.gmail.com",
+                "password": "password",
+                "nickname": "Nickname"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "email": "email@gmail.com",
+                  "nickname": "nickname"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Пользователь не найден"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/tag": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Add tag for user",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "example": {
+                "tags": [1, 2, 3, 4]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "tags": [
+                    {
+                      "id": 1,
+                      "name": "nameTag",
+                      "sortOrder": 0
+                    },
+                    {
+                      "id": 2,
+                      "name": "nameTag_2",
+                      "sortOrder": 0
+                    },
+                    {
+                      "id": 3,
+                      "name": "nameTag_3",
+                      "sortOrder": 0
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/tag/{id}": {
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete user tag",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Tag id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "tags": [
+                    {
+                      "id": "id",
+                      "name": "example",
+                      "sortOrder": 0
+                    },
+                    {
+                      "id": "id",
+                      "name": "example_1",
+                      "sortOrder": 0
+                    },
+                    {
+                      "id": "id",
+                      "name": "example_2",
+                      "sortOrder": 0
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Пользователь с id не найден"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/tag/my": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user tag",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "tags": [
+                    {
+                      "id": "id",
+                      "name": "example",
+                      "sortOrder": 0
+                    },
+                    {
+                      "id": "id",
+                      "name": "example_2",
+                      "sortOrder": 0
+                    },
+                    {
+                      "id": "id",
+                      "name": "example_3",
+                      "sortOrder": 0
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Пользователь с id не найден"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag": {
+      "post": {
+        "tags": ["tag"],
+        "summary": "Create user tag",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation - Bearer token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "id,",
+                  "name": "example,",
+                  "sortOrder": 0
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Такой Тэг уже уществует"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag/{id}": {
+      "get": {
+        "tags": ["tag"],
+        "summary": "Get tag",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation - Bearer token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Tag id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "id,",
+                  "name": "example,",
+                  "sortOrder": 0
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Тэг не найден"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag/": {
+      "get": {
+        "tags": ["tag"],
+        "summary": "Get tag",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation - Bearer token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "PageSize",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sortByOrder",
+            "in": "query",
+            "description": "Sort by order",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sortByName",
+            "in": "query",
+            "description": "Sort by name",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "data": [
+                      {
+                        "creator": {
+                          "nickname": "example",
+                          "uid": "exam-pl-eUID"
+                        },
+                        "name": "example",
+                        "sortOrder": "0"
+                      },
+                      {
+                        "creator": {
+                          "nickname": "example",
+                          "uid": "exam-pl-eUID"
+                        },
+                        "name": "example",
+                        "sortOrder": "0"
+                      }
+                    ],
+                    "meta": {
+                      "offset": 10,
+                      "length": 10,
+                      "quantity": 100
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Тэгов не найдено"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag/{id } ": {
+      "put": {
+        "tags": ["tag"],
+        "summary": "Update tag",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "JWT token in heaader Authorisation",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Tag id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "creator": {
+                    "nickname": "example",
+                    "uid": "exam-pl-eUID"
+                  },
+                  "name": "example",
+                  "sortOrder": "0"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not successful operation",
+            "content": {
+              "string": {
+                "example": "Только автор может редактировать тег"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag/{ id} ": {
+      "delete": {
+        "tags": ["tag"],
+        "summary": "Delete tag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Tag id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "string": {
+                "example": "Тег удален"
+              }
+            },
+            "404": {
+              "description": "Not successful operation",
+              "content": {
+                "string": {
+                  "example": "Только автор может удалить тег"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

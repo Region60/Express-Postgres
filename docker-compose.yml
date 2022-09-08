@@ -1,0 +1,47 @@
+version: "3.9"
+services:
+  back:
+    container_name: backend
+    build: .
+    depends_on:
+      - "db"
+    ports:
+      - "3000:3000"
+    #command: npm run dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - postgres
+
+  db:
+    container_name: db
+    image: postgres:14.5-alpine
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: user01
+      POSTGRES_PASSWORD: qwertyui
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      
+      - .:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user01 -d test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
