@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://localhost:3000"
+      "url": "https://mighty-stream-74647.herokuapp.com/"
     }
   ],
   "tags": [
