@@ -6,7 +6,9 @@ const expire = keys.JWT_EXPIRE
 
 
 const jwtToken = {
+  
   generate(user) {
+    console.log(expire)
     const u = {
       name: user.nickname,
       email: user.email,
