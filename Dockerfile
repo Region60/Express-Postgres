@@ -4,7 +4,8 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 ENV PORT=3000
-ENV JWT_SECRET=1800
+ENV JWT_EXPIRE=1800
+ENV JWT_SECRET=top_secret_value
 EXPOSE $PORT
 
 CMD ["node", "./bin/www"]

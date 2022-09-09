@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+require('dotenv').config()
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../task/doc/swagger.json');
 
