@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://mighty-stream-74647.herokuapp.com/"
+      "url": "https://mighty-stream-74647.herokuapp.com"
     }
   ],
   "tags": [
@@ -121,24 +121,22 @@
       "post": {
         "tags": ["user"],
         "summary": "Login user",
-        "parameters": 
-        [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "JWT token in heaader Authorisation",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
-          "description": "Login user",
           "content": {
             "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
               "example": {
-                "email": "email@gmail.com",
+                "email": "email.gmail.com",
                 "password": "password"
               }
             }
@@ -206,7 +204,7 @@
     "/user": {
       "put": {
         "tags": ["user"],
-        "summary": "Login user data",
+        "summary": "Update user data",
         "parameters": [
           {
             "name": "token",
