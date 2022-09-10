@@ -1,4 +1,4 @@
-const key = require("../keys/index")
+const keys = require("../keys/index")
 const jwt = require("jsonwebtoken")
 
 function auth(req, res, next) {
@@ -7,9 +7,10 @@ function auth(req, res, next) {
     if (!token) {
       res.status(401).send("Отсутствует токен")
     }
-    token = token.replace('Bearer ', '')
+    token = token.replace("Bearer ", "")
+    jwt.verify(token, keys.JWT_SECRET, function (err, decoded) {
+      console.log(err)
 
-    jwt.verify(token, key.JWT_SECRET, function (err, decoded) {
       if (err) {
         return res.status(401).json({
           success: false,

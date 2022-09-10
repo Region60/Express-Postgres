@@ -1,12 +1,15 @@
 const { Pool } = require("pg")
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL ,
-ssl:{
-  rejectUnauthorized:false
-}
+  user: process.env.DATABASE_USER,
+  host: process.env.DATABASE_HOST,
+  database: process.env.DATABASE_NAME_BASE,
+  password: process.env.DATABASE_PASSWORD,
+  port: process.env.DATABASE_PORT,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 })
-
 
 const tablesData = [
   {
@@ -34,17 +37,16 @@ const db = {
       )
       .then((res) => res)
       .catch((e) => console.error(e.stack))
-      if (result.rows){
-        return result.rows
-      }else{
-        console.log("В базе данных нет таблиц")
-      }
-
+    if (result.rows) {
+      return result.rows
+    } else {
+      console.log("В базе данных нет таблиц")
+    }
   },
 
-    async createTables(index) {
-      let i = index
-      if(!(index === tablesData.length)){
+  async createTables(index) {
+    let i = index
+    if (!(index === tablesData.length)) {
       const tables = await this.getAllTables()
       if (!tables.find((t) => t.table_name === tablesData[i].name)) {
         const result = await pool
@@ -53,12 +55,11 @@ const db = {
             console.log(`таблица ${tablesData[i].name} создана`)
             return res
           })
-        .catch((e) => console.error(e.stack))
+          .catch((e) => console.error(e.stack))
+      }
+      i += 1
+      this.createTables(i)
     }
-    i+= 1
-    this.createTables(i)
-  }
-
   },
 
   async findOne(table, column, value) {
@@ -66,18 +67,18 @@ const db = {
       .query(`SELECT * FROM ${table} WHERE ${column} = '${value}'`)
       .then((res) => res)
       .catch((e) => console.error(e.stack))
-    return result.rows[0]||null
+    return result.rows[0] || null
   },
 
-  async findUserWithTags (id){
+  async findUserWithTags(id) {
     const result = await pool
-    .query(`SELECT * FROM users  JOIN tag ON users.id = tag.creator and tag.creator = '${id}' `)
+      .query(
+        `SELECT * FROM users LEFT JOIN tag ON  users.id = tag.creator where users.id = '${id}'`
+      )
       .then((res) => res)
       .catch((e) => console.error(e.stack))
-      console.log(result.rows)
-    return result.rows||null
+    return result.rows.length ? result.rows : null
   },
-  
 
   delete(table, id) {
     pool.query(`DELETE FROM ${table} WHERE id='${id}'`)
@@ -95,9 +96,12 @@ const db = {
 
   async updateUser(newUserData) {
     const { password, nickname, id, email } = newUserData
+    const passwordValue = password? `password = '${password}'` :''
+    const nicknameValue = nickname? `nickname = '${nickname}',` :''
+    const emailValue = email? `email = '${email}',` :''
     const result = await pool
       .query(
-        `UPDATE users SET email = '${email}', nickname = '${nickname}', password = '${password}' WHERE id = '${id}'`
+        `UPDATE users SET ${emailValue}${nicknameValue}${passwordValue} WHERE id = '${id}'`
       )
       .then((res) => res)
       .catch((e) => console.error(e.stack))
@@ -121,14 +125,14 @@ const db = {
       )
       .then((res) => res)
       .catch((e) => console.error(e.stack))
-    return result.rows[0]||null
+    return result.rows[0] || null
   },
 
   async findManyTag(sortBy, page, pageSize) {
     const sorter = sortBy === null ? "" : `ORDER BY ${sortBy}`
     const paginator =
       page || pageSize
-        ? `LIMIT ${pageSize} OFFSET ${pageSize * page - page}`
+        ? `LIMIT ${pageSize} OFFSET ${pageSize * --page}`
         : ""
     const result = await pool
       .query(
@@ -136,7 +140,8 @@ const db = {
       )
       .then((res) => res)
       .catch((e) => console.error(e.stack))
-      return result.rows||null
+
+    return result.rows || null
   },
 
   async updateTag(idTag, text) {
@@ -181,7 +186,7 @@ const db = {
   async getUeserTag(idUser) {
     const result = await pool
       .query(
-        `SELECT  tag.name, tag.id, tag.sortOrder FROM tag, userTag WHERE userTag.users='${idUser}' AND tag.creator = userTag.users;`
+        `SELECT  tag.name, tag.id, tag.sortOrder FROM tag JOIN usertag ON tag.id = usertag.tagid WHERE usertag.users='${idUser}'`
       )
       .then((res) => res)
       .catch((e) => console.error(e.stack))

@@ -75,7 +75,7 @@
     "/user/getuser": {
       "get": {
         "tags": ["user"],
-        "summary": "Create user",
+        "summary": "Get user",
         "parameters": [
           {
             "name": "JWT token",
