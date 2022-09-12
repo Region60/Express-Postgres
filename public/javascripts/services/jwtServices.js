@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken")
 const keys = require("../../../keys/index")
-const key = require("../../../keys/index")
 
 const expire = keys.JWT_EXPIRE
 

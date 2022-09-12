@@ -7,6 +7,7 @@ var router = express.Router()
 
 router.get("/getuser", auth, async (req, res) => {
   try {
+
     const { code, payload, message } = await user.findOne(req.userAuth.id)
     if (code === 200) {
       const { password, ...withOutPass } = payload

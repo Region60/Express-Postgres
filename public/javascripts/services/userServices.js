@@ -6,15 +6,18 @@ const jwtToken = require("./jwtServices")
 const user = {
   async findOne(idUser) {
     const response = await db.findUserWithTags(idUser)
+    console.log({ response, idUser })
     if (response) {
       const userWithTagResponse = {
         email: response[0].email,
         nickname: response[0].nickname,
-        tags: response.map((i) => ({
-          id: i.id,
-          name: i.name,
-          sortOrder: i.sortorder,
-        })),
+        tags: response
+          .filter((i) => i.id)
+          .map((i) => ({
+            id: i.id,
+            name: i.name,
+            sortOrder: i.sortorder,
+          })),
       }
       return { code: 200, payload: userWithTagResponse }
     } else {
