@@ -529,7 +529,7 @@
     "/tag/": {
       "get": {
         "tags": ["tag"],
-        "summary": "Get tag",
+        "summary": "Get tags",
         "parameters": [
           {
             "name": "token",
